@@ -8,7 +8,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Buffer {
 
     private LinkedList<Flaske> queue = new LinkedList<>();
-    private int capacity;
+    private int kapacitet;
     private Lock lock = new ReentrantLock();
     private Condition notFull = lock.newCondition();
     private Condition notEmpty = lock.newCondition();
@@ -19,16 +19,16 @@ public class Buffer {
         return listNavn;
     }
 
-    public Buffer(int capacity, String listNavn){
-        this.capacity = capacity;
-        this.listNavn = listNavn;
+    public Buffer(int capacity, String listName){
+        this.kapacitet = capacity;
+        this.listNavn = listName;
     }
 
 
     public void tilfoejFlaskeTilKoe(Flaske flaske) {
         lock.lock();
         try {
-            while (queueSize() >= capacity) {
+            while (queueSize() >= kapacitet) {
                 try {
                     notFull.await();
                 } catch (InterruptedException e) {
